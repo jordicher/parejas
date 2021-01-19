@@ -1,4 +1,4 @@
-## Github pages
+## Parejas
 https://jordicher.github.io/parejas/
 
 Este proyecto se menciona en el video de youtube

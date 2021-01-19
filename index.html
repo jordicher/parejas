@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juego de parejas</title>
+    
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="myCss.css">   
+  </head>
+
+  <body>
+    <div class="fixed z-10 inset-0 overflow-y-auto" id="popStart">
+      <div
+        class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+      >
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+          <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+        </div>
+
+        <span
+          class="hidden sm:inline-block sm:align-middle sm:h-screen"
+          aria-hidden="true"
+          >&#8203;</span
+        >
+
+        <div
+          class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-headline"
+        >
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div class="sm:flex sm:items-start">
+              <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                <h3
+                  class="text-lg leading-6 font-medium text-gray-900"
+                  id="modal-headline"
+                >
+                  Salutaciones
+                </h3>
+                <!-- Input inserta tu nombre -->
+                <form id="formTop">
+                  <label for="nameUsuario"></label>Inserta tu nombre
+                  <input class="border-gray-400 border-2" type="text" id="nameUsuario">
+                  <!-- <input class="hidden" type="number" id="formIncorrectos">
+                  <input class="hidden" type="number" name="formTime" id="formTime"> -->
+                </form>
+
+
+                <div class="mt-2">
+                  <p class="text-sm text-gray-500">
+                    Al iniciar se remuevan todas las cartas. El botón superior sirve para volver a remover, o bien reiniciar el juego.
+                  </p>
+                </div>
+
+                <div id='topUsers' class="text-center mt-3 text-sm"></div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+            <button
+              type="button"
+              class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+              id="startGame"       
+            >              
+               <svg class="animate-spin h-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              
+                <circle class="opacity-50" cx="12" cy="12" r="10" stroke="purple" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+<div class="flex justify-center mt-3">
+  
+      <button
+        type="button"
+        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+        onclick="(impImagenes(remover()))"
+      >
+        Remover
+      </button>
+  
+      <button
+        type="button"
+        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+        onclick="(restart())"
+      >
+        Reiniciar
+      </button>
+
+      <div class="w-full inline-flex justify-center px-4 py-2 text-base font-medium sm:ml-3 sm:w-auto sm:text-sm" id="timeStart"></div>
+      <div class="w-full inline-flex justify-center px-4 py-2 text-base text-red-700 font-medium sm:ml-3 sm:w-auto sm:text-sm" id="impIncorrectas"></div>
+      <div class="w-full inline-flex justify-center px-4 py-2 text-base text-green-700 font-medium sm:ml-3 sm:w-auto sm:text-sm" id="impCorrectas"></div>
+
+</div>
+    <div
+      class="container mx-auto grid grid-rows-5 sm:grid-rows-3 grid-flow-col gap-1 md:gap-3"
+      id="imprimir"
+    ></div>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+
+  var firebaseConfig = {
+    apiKey: "AIzaSyD10tc1lxOB6Gs9Ot1HxZwnTNmhqmfHQjM",
+    authDomain: "parejasportfolio.firebaseapp.com",
+    projectId: "parejasportfolio",
+    storageBucket: "parejasportfolio.appspot.com",
+    messagingSenderId: "381076963866",
+    appId: "1:381076963866:web:8843fa4fdf87923cb187a3"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+
+ <script src="index.js"></script>
+  </body>
+</html>
